@@ -1,0 +1,14 @@
+{
+  "description": "Loop body is skipped when the condition is false",
+  "input": {
+    "N": 0,
+    "S": 0
+  },
+  "expect": {
+    "status": "ok",
+    "state": {
+      "N": 0,
+      "S": 0
+    }
+  }
+}

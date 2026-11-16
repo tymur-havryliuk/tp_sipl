@@ -1,0 +1,15 @@
+{
+  "description": "Course example: R = X^Y",
+  "input": {
+    "X": 3,
+    "Y": 4
+  },
+  "expect": {
+    "status": "ok",
+    "state": {
+      "X": 3,
+      "Y": 0,
+      "R": 81
+    }
+  }
+}

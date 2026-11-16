@@ -1,0 +1,10 @@
+{
+  "description": "Statements run left to right",
+  "expect": {
+    "status": "ok",
+    "state": {
+      "X": 20,
+      "Y": 2
+    }
+  }
+}

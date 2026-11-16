@@ -1,0 +1,14 @@
+{
+  "description": "Sum 1..10",
+  "input": {
+    "N": 10,
+    "S": 0
+  },
+  "expect": {
+    "status": "ok",
+    "state": {
+      "N": 0,
+      "S": 55
+    }
+  }
+}

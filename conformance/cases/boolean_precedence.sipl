@@ -1,0 +1,2 @@
+if true or false and false then A := 1 else A := 0;
+if not false and false then B := 1 else B := 0

@@ -1,0 +1,11 @@
+{
+  "description": "if requires an else branch",
+  "expect": {
+    "status": "syntax_error",
+    "error": {
+      "code": "unexpected-end",
+      "line": 1,
+      "column": 21
+    }
+  }
+}

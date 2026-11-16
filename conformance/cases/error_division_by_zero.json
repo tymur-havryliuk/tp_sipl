@@ -1,0 +1,11 @@
+{
+  "description": "Division by zero is undefined",
+  "expect": {
+    "status": "runtime_error",
+    "error": {
+      "code": "division-by-zero",
+      "line": 2,
+      "column": 6
+    }
+  }
+}

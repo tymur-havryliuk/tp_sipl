@@ -1,0 +1,11 @@
+{
+  "description": "Integer division rounds toward zero",
+  "expect": {
+    "status": "ok",
+    "state": {
+      "A": 3,
+      "B": -3,
+      "C": -3
+    }
+  }
+}

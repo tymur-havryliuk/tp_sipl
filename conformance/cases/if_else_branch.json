@@ -1,0 +1,13 @@
+{
+  "description": "False condition selects the else branch",
+  "input": {
+    "X": 0
+  },
+  "expect": {
+    "status": "ok",
+    "state": {
+      "X": 0,
+      "Y": 2
+    }
+  }
+}

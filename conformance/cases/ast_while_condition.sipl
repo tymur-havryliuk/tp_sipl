@@ -1,0 +1,1 @@
+while not X = 0 and true do X := X - 1

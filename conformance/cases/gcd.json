@@ -1,0 +1,14 @@
+{
+  "description": "Euclid by subtraction",
+  "input": {
+    "A": 48,
+    "B": 18
+  },
+  "expect": {
+    "status": "ok",
+    "state": {
+      "A": 6,
+      "B": 6
+    }
+  }
+}

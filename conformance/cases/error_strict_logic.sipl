@@ -1,0 +1,1 @@
+if true or X > 0 then Y := 1 else Y := 2

@@ -1,0 +1,13 @@
+{
+  "description": "Course notation for operators",
+  "input": {
+    "X": 9
+  },
+  "expect": {
+    "status": "ok",
+    "state": {
+      "X": 9,
+      "Y": 4
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "description": "Statements must be separated by ';'",
+  "expect": {
+    "status": "syntax_error",
+    "error": {
+      "code": "unexpected-token",
+      "line": 2,
+      "column": 1
+    }
+  }
+}

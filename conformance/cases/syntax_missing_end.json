@@ -1,0 +1,11 @@
+{
+  "description": "Unterminated block",
+  "expect": {
+    "status": "syntax_error",
+    "error": {
+      "code": "unexpected-end",
+      "line": 2,
+      "column": 9
+    }
+  }
+}

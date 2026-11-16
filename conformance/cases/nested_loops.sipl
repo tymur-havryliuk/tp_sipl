@@ -1,0 +1,14 @@
+begin
+  P := 0;
+  I := 0;
+  while I < A do
+  begin
+    J := 0;
+    while J < B do
+    begin
+      P := P + 1;
+      J := J + 1
+    end;
+    I := I + 1
+  end
+end

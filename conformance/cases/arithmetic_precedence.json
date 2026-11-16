@@ -1,0 +1,9 @@
+{
+  "description": "* and / bind tighter than + and -",
+  "expect": {
+    "status": "ok",
+    "state": {
+      "X": 11
+    }
+  }
+}

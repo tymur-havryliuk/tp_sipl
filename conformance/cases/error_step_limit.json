@@ -1,0 +1,10 @@
+{
+  "description": "Non-terminating loop hits the step limit",
+  "max_steps": 100,
+  "expect": {
+    "status": "runtime_error",
+    "error": {
+      "code": "step-limit"
+    }
+  }
+}

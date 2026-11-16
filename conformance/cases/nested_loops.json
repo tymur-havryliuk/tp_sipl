@@ -1,0 +1,17 @@
+{
+  "description": "Multiplication by repeated increment",
+  "input": {
+    "A": 3,
+    "B": 4
+  },
+  "expect": {
+    "status": "ok",
+    "state": {
+      "A": 3,
+      "B": 4,
+      "P": 12,
+      "I": 3,
+      "J": 4
+    }
+  }
+}

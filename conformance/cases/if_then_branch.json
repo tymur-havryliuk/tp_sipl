@@ -1,0 +1,13 @@
+{
+  "description": "True condition selects the then branch",
+  "input": {
+    "X": 5
+  },
+  "expect": {
+    "status": "ok",
+    "state": {
+      "X": 5,
+      "Y": 1
+    }
+  }
+}

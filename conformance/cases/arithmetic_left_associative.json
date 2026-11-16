@@ -1,0 +1,10 @@
+{
+  "description": "Binary operators associate to the left",
+  "expect": {
+    "status": "ok",
+    "state": {
+      "X": 89,
+      "Y": 8
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "description": "Characters outside the alphabet",
+  "expect": {
+    "status": "syntax_error",
+    "error": {
+      "code": "unexpected-character",
+      "line": 1,
+      "column": 8
+    }
+  }
+}

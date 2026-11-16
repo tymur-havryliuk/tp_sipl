@@ -1,0 +1,11 @@
+{
+  "description": "Both operands of 'or' are evaluated",
+  "expect": {
+    "status": "runtime_error",
+    "error": {
+      "code": "undefined-variable",
+      "line": 1,
+      "column": 12
+    }
+  }
+}

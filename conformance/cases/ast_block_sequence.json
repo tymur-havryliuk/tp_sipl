@@ -1,0 +1,31 @@
+{
+  "description": "A block containing a flat sequence",
+  "expect": {
+    "status": "ok",
+    "state": {
+      "X": 1
+    },
+    "ast": {
+      "type": "Program",
+      "body": {
+        "type": "Block",
+        "body": {
+          "type": "Seq",
+          "statements": [
+            {
+              "type": "Skip"
+            },
+            {
+              "type": "Assign",
+              "target": "X",
+              "value": {
+                "type": "Num",
+                "value": 1
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

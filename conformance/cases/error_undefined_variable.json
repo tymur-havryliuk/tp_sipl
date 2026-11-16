@@ -1,0 +1,11 @@
+{
+  "description": "Reading an unbound variable is undefined",
+  "expect": {
+    "status": "runtime_error",
+    "error": {
+      "code": "undefined-variable",
+      "line": 2,
+      "column": 6
+    }
+  }
+}

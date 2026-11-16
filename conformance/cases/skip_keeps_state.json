@@ -1,0 +1,12 @@
+{
+  "description": "skip leaves the state unchanged",
+  "input": {
+    "A": 3
+  },
+  "expect": {
+    "status": "ok",
+    "state": {
+      "A": 3
+    }
+  }
+}

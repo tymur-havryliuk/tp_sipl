@@ -1,0 +1,9 @@
+{
+  "description": "Assignment of a literal",
+  "expect": {
+    "status": "ok",
+    "state": {
+      "X": 5
+    }
+  }
+}

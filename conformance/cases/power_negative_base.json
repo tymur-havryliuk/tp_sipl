@@ -1,0 +1,15 @@
+{
+  "description": "Integers may be negative",
+  "input": {
+    "X": -2,
+    "Y": 3
+  },
+  "expect": {
+    "status": "ok",
+    "state": {
+      "X": -2,
+      "Y": 0,
+      "R": -8
+    }
+  }
+}
