@@ -1,0 +1,4 @@
+begin
+  Q := X / Y;
+  R := X - Q * Y
+end

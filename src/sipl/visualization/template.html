@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SIPL: parse tree vs AST</title>
+<style>
+  :root {
+    --bg: #ffffff; --fg: #1f2328; --muted: #656d76; --border: #d0d7de;
+    --panel: #f6f8fa; --mark: #ffe58f; --active: #dbe9ff; --token: #0a58ca;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0d1117; --fg: #e6edf3; --muted: #8d96a0; --border: #30363d;
+      --panel: #161b22; --mark: #6b5300; --active: #1f3a5f; --token: #79b8ff;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg);
+         font: 14px/1.45 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
+  header { padding: 12px 16px; border-bottom: 1px solid var(--border); }
+  header h1 { font-size: 16px; margin: 0; }
+  main { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 16px;
+         padding: 16px; }
+  @media (max-width: 800px) { main { grid-template-columns: 1fr; } }
+  section { min-width: 0; border: 1px solid var(--border); border-radius: 6px; }
+  h2 { margin: 0; padding: 8px 12px; font-size: 13px; background: var(--panel);
+       border-bottom: 1px solid var(--border); display: flex; gap: 8px; align-items: center; }
+  pre { margin: 0; padding: 12px; overflow: auto; font: 13px/1.5 ui-monospace, Menlo, monospace;
+        cursor: text; }
+  mark { background: var(--mark); color: inherit; border-radius: 2px; }
+  .tabs button { font: inherit; border: 1px solid var(--border); background: var(--bg);
+                 color: var(--fg); padding: 2px 10px; border-radius: 4px; cursor: pointer; }
+  .tabs button[aria-pressed="true"] { background: var(--active); }
+  .count { color: var(--muted); font-weight: normal; margin-left: auto; }
+  .tree { padding: 8px 12px; overflow: auto; max-height: 75vh;
+          font: 13px/1.6 ui-monospace, Menlo, monospace; }
+  .tree ul { list-style: none; margin: 0; padding-left: 18px; border-left: 1px dotted var(--border); }
+  .tree > ul { padding-left: 0; border: 0; }
+  .node { cursor: pointer; padding: 0 4px; border-radius: 3px; white-space: nowrap; }
+  .node.token { color: var(--token); }
+  .node:hover { background: var(--panel); }
+  .node.selected { background: var(--active); }
+</style>
+</head>
+<body>
+<header>
+  <h1 id="title"></h1>
+</header>
+<main>
+  <section>
+    <h2>Source</h2>
+    <pre id="source"></pre>
+  </section>
+  <section>
+    <h2>
+      <span class="tabs">
+        <button data-view="parseTree" aria-pressed="true">Parse tree</button>
+        <button data-view="ast" aria-pressed="false">AST</button>
+      </span>
+      <span class="count" id="count"></span>
+    </h2>
+    <div class="tree" id="tree"></div>
+  </section>
+</main>
+<script id="data" type="application/json">/*DATA*/</script>
+<script>
+(() => {
+  const data = JSON.parse(document.getElementById("data").textContent);
+  const sourceEl = document.getElementById("source");
+  const treeEl = document.getElementById("tree");
+  const countEl = document.getElementById("count");
+  document.getElementById("title").textContent = data.title;
+  let view = "parseTree";
+  let selected = null;
+
+  const escape = (s) => s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);
+
+  function highlight(span) {
+    const src = data.source;
+    if (!span) { sourceEl.innerHTML = escape(src); return; }
+    const a = span.start.offset, b = Math.max(span.end.offset, a);
+    sourceEl.innerHTML = escape(src.slice(0, a)) + "<mark>" + escape(src.slice(a, b) || " ")
+      + "</mark>" + escape(src.slice(b));
+    const mark = sourceEl.querySelector("mark");
+    if (mark) mark.scrollIntoView({ block: "nearest" });
+  }
+
+  function select(el) {
+    if (selected) selected.classList.remove("selected");
+    selected = el;
+    if (el) { el.classList.add("selected"); el.scrollIntoView({ block: "nearest" }); }
+    highlight(el ? el._span : null);
+  }
+
+  function build(node) {
+    const li = document.createElement("li");
+    const label = document.createElement("span");
+    label.className = "node" + (node.token ? " token" : "");
+    label.textContent = node.label;
+    label.title = `${node.span.start.line}:${node.span.start.column}-${node.span.end.line}:${node.span.end.column}`;
+    label._span = node.span;
+    label.addEventListener("mouseenter", () => highlight(node.span));
+    label.addEventListener("mouseleave", () => highlight(selected ? selected._span : null));
+    label.addEventListener("click", () => select(label));
+    li.appendChild(label);
+    if (node.children) {
+      const ul = document.createElement("ul");
+      node.children.forEach((child) => ul.appendChild(build(child)));
+      li.appendChild(ul);
+    }
+    return li;
+  }
+
+  function render() {
+    treeEl.innerHTML = "";
+    const ul = document.createElement("ul");
+    ul.appendChild(build(data[view]));
+    treeEl.appendChild(ul);
+    countEl.textContent = `${treeEl.querySelectorAll(".node").length} nodes`;
+    select(null);
+  }
+
+  function offsetAt(event) {
+    const range = document.caretRangeFromPoint
+      ? document.caretRangeFromPoint(event.clientX, event.clientY)
+      : null;
+    if (range && sourceEl.contains(range.startContainer)) {
+      const pre = document.createRange();
+      pre.setStart(sourceEl, 0);
+      pre.setEnd(range.startContainer, range.startOffset);
+      return pre.toString().length;
+    }
+    const pos = document.caretPositionFromPoint?.(event.clientX, event.clientY);
+    if (!pos) return null;
+    const pre = document.createRange();
+    pre.setStart(sourceEl, 0);
+    pre.setEnd(pos.offsetNode, pos.offset);
+    return pre.toString().length;
+  }
+
+  sourceEl.addEventListener("click", (event) => {
+    const offset = offsetAt(event);
+    if (offset === null) return;
+    let best = null;
+    for (const el of treeEl.querySelectorAll(".node")) {
+      const s = el._span;
+      if (s.start.offset <= offset && offset < s.end.offset) {
+        if (!best || s.end.offset - s.start.offset <= best._span.end.offset - best._span.start.offset) best = el;
+      }
+    }
+    select(best);
+  });
+
+  document.querySelectorAll(".tabs button").forEach((button) => {
+    button.addEventListener("click", () => {
+      view = button.dataset.view;
+      document.querySelectorAll(".tabs button").forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+      render();
+    });
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+// SIPL grammar, version 1.0. EBNF form of the course BNF, LALR(1).
+//
+// The course BNF is ambiguous (S ::= S ; S, a ::= a + a, ...). Here the same
+// language is stratified by precedence; see docs/language.md for the mapping.
+
+program: stmt
+
+stmt: simple_stmt (";" simple_stmt)*
+
+?simple_stmt: assign
+            | if_stmt
+            | while_stmt
+            | block
+            | skip
+
+assign: VAR ":=" aexpr
+if_stmt: "if" bexpr "then" simple_stmt "else" simple_stmt
+while_stmt: "while" bexpr "do" simple_stmt
+block: "begin" stmt "end"
+skip: "skip"
+
+aexpr: aexpr ADD_OP term
+     | term
+term: term MUL_OP factor
+    | factor
+factor: NUMBER
+      | VAR
+      | "(" aexpr ")"
+
+bexpr: bexpr or_op bterm
+     | bterm
+bterm: bterm and_op bfactor
+     | bfactor
+bfactor: not_op bfactor
+       | batom
+batom: "true"
+     | "false"
+     | aexpr REL_OP aexpr
+     | "(" bexpr ")"
+
+or_op: "or" | "∨" | "|"
+and_op: "and" | "∧" | "&"
+not_op: "not" | "¬" | "!"
+
+ADD_OP: "+" | "-"
+MUL_OP: "*" | "/" | "÷"
+REL_OP: "<=" | ">=" | "!=" | "<>" | "≤" | "≥" | "≠" | "=" | "<" | ">"
+
+NUMBER: /[0-9]+/
+VAR: /[A-Za-z_][A-Za-z0-9_]*/
+
+%import common.WS
+%ignore WS

@@ -1,0 +1,2 @@
+if A >= B ∧ A >= C then M := A
+else if B >= C then M := B else M := C
